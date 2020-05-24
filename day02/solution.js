@@ -8,10 +8,8 @@ const input = fs
 
 const intcode = input[0].split(",").map((i) => parseInt(i));
 
-const processInstruction = (opcode, params, array) => {
-  const index1 = params[0],
-    index2 = params[1],
-    index3 = params[2];
+const processInstruction = function (opcode, params, array) {
+  const [index1, index2, index3] = params;
   if (opcode == 1) {
     array[index3] = array[index1] + array[index2];
   } else if (opcode == 2) {
@@ -19,7 +17,7 @@ const processInstruction = (opcode, params, array) => {
   }
 };
 
-const runIntCode = (noun, verb) => {
+const runIntCode = function (noun, verb) {
   let copy = [...intcode];
   (copy[1] = noun), (copy[2] = verb);
   for (let i = 0; i < copy.length; i += 4) {
