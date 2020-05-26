@@ -24,9 +24,13 @@ class Vertex {
   constructor(name) {
     this.name = name;
     this.children = [];
+    this.par = null;
   }
   addChild(v) {
     this.children.push(v);
+  }
+  addParent(p) {
+    this.par = p;
   }
 }
 
@@ -35,6 +39,7 @@ const createGraph = function (input) {
   for (let i = 0; i < input.length; i++) {
     const [p, c] = input[i].split(")").map((v) => dag.getVertex(v));
     p.addChild(c);
+    c.addParent(p);
   }
   return dag;
 };
@@ -51,5 +56,27 @@ const countOrbits = function (root, depth) {
   return orbits;
 };
 
-console.log(com.children[0]);
 console.log(countOrbits(com, 1));
+
+const getDistance = function (start, stop) {
+  let visited = new Set([start]);
+  let queue = [[start, 0]];
+  while (queue.length > 0) {
+    let [v, distance] = queue.shift();
+    if (v.name === stop.name) {
+      return distance;
+    } else {
+      const neighbors = [v.par, ...v.children];
+      for (let n of neighbors) {
+        if (n && !visited.has(n)) {
+          visited.add(n);
+          queue.push([n, distance + 1]);
+        }
+      }
+    }
+  }
+};
+
+const you = dag.getVertex("YOU");
+const santa = dag.getVertex("SAN");
+console.log(getDistance(you.par, santa.par));
