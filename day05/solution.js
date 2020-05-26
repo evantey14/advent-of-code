@@ -17,41 +17,54 @@ const ADDITION = 1;
 const MULTIPLICATION = 2;
 const INPUT = 3;
 const OUTPUT = 4;
+const JUMPIFTRUE = 5;
+const JUMPIFFALSE = 6;
+const LESSTHAN = 7;
+const EQUALS = 8;
+const opcodes = [
+  "",
+  "ADD",
+  "MULT",
+  "INPUT",
+  "OUTPUT",
+  "JUMPIFTRUE",
+  "JUMPIFFALSE",
+  "LESSTHAN",
+  "EQUALS",
+];
 
 const processIntcode = function (intcode, input) {
   let opcodeIndex = 0;
   while (intcode[opcodeIndex] !== 99) {
-    //console.log("INDEX:", opcodeIndex);
+    //console.log("INDEX:", opcodeIndex, intcode.slice(opcodeIndex, opcodeIndex + 4));
     const [paramModes, opcode] = parseInstruction(intcode[opcodeIndex]);
-    //console.log("INSTRUCTION:", paramModes, opcode);
+    //console.log("INSTRUCTION:", opcodes[opcode]);
     const params = getParams(intcode, opcode, opcodeIndex, paramModes);
-    //console.log("PARAMS:", params);
-    processOpcode(intcode, input, opcode, params);
+    //console.log("PARAMS:", params, "(PARAM MODES:", paramModes, ")");
+    opcodeIndex = processOpcode(intcode, input, opcodeIndex, opcode, params);
     //console.log(intcode.slice(0, 14), intcode[225]);
-    opcodeIndex = updateOpcodeIndex(opcode, opcodeIndex);
   }
 };
 
 const parseInstruction = function (instruction) {
   const opcode = instruction % 100;
-  let paramModes = [];
+  const paramModes = Math.floor(instruction / 100)
+    .toString()
+    .padStart(3, "0")
+    .split("")
+    .reverse()
+    .map((s) => parseInt(s));
   switch (opcode) {
     case ADDITION:
     case MULTIPLICATION:
-      const frontDigits = Math.floor(instruction / 100)
-        .toString()
-        .padStart(4, "0");
-      paramModes = frontDigits
-        .split("")
-        .reverse()
-        .map((s) => parseInt(s));
-      break;
+    case LESSTHAN:
+    case EQUALS: return [paramModes, opcode];
     case INPUT:
-    case OUTPUT:
-      paramModes = [Math.floor(instruction / 100)];
-      break;
+    case OUTPUT: return [paramModes.slice(0, 1), opcode];
+    case JUMPIFTRUE:
+    case JUMPIFFALSE: return [paramModes.slice(0, 2), opcode];
+    default: throw `unrecognized opcode ${opcode}.`;
   }
-  return [paramModes, opcode];
 };
 
 const treatAsRef = function (paramMode) {
@@ -62,54 +75,52 @@ const treatAsRef = function (paramMode) {
   }
 };
 
-const getParams = function (intcode, opcode, opcodeIndex, paramModes) {
-  switch (opcode) {
-    case ADDITION:
-    case MULTIPLICATION:
-      let param1 = intcode[opcodeIndex + 1];
-      let param2 = intcode[opcodeIndex + 2];
-      param1 = treatAsRef(paramModes[0]) ? intcode[param1] : param1;
-      param2 = treatAsRef(paramModes[1]) ? intcode[param2] : param2;
-      return [param1, param2, intcode[opcodeIndex + 3]];
-    case INPUT:
-      return [intcode[opcodeIndex + 1]];
-    case OUTPUT:
-      let param = intcode[opcodeIndex + 1];
-      param = treatAsRef(paramModes[0]) ? intcode[param] : param;
-      return [param];
-    default:
-      throw `unrecognized opcode ${opcode}.`;
-  }
+const savingOpcode = function (opcode) {
+  return [ADDITION, MULTIPLICATION, INPUT, LESSTHAN, EQUALS].includes(opcode);
 };
 
-const processOpcode = function (intcode, input, opcode, params) {
+const getParams = function (intcode, opcode, opcodeIndex, paramModes) {
+  let params = [];
+  for (let i = 0; i < paramModes.length; i++) {
+    const param = intcode[opcodeIndex + 1 + i];
+    params.push(treatAsRef(paramModes[i]) ? intcode[param] : param);
+  }
+  if (savingOpcode(opcode)) {
+    // if opcode saves value to a file, force last param to the reference.
+    const lastIndex = params.length - 1;
+    params[lastIndex] = intcode[opcodeIndex + 1 + lastIndex];
+  }
+  return params;
+};
+
+const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
   switch (opcode) {
     case ADDITION:
       intcode[params[2]] = params[0] + params[1];
-      break;
+      return opcodeIndex + 4;
     case MULTIPLICATION:
       intcode[params[2]] = params[0] * params[1];
-      break;
+      return opcodeIndex + 4;
     case INPUT:
       intcode[params[0]] = input;
-      break;
+      return opcodeIndex + 2;
     case OUTPUT:
       console.log(params[0]);
-      break;
+      return opcodeIndex + 2;
+    case JUMPIFTRUE:
+      return params[0] !== 0 ? params[1] : opcodeIndex + 3;
+    case JUMPIFFALSE:
+      return params[0] === 0 ? params[1] : opcodeIndex + 3;
+    case LESSTHAN:
+      intcode[params[2]] = params[0] < params[1] ? 1 : 0;
+      return opcodeIndex + 4;
+    case EQUALS:
+      intcode[params[2]] = params[0] === params[1] ? 1 : 0;
+      return opcodeIndex + 4;
     default:
       throw `unrecognized opcode ${opcode}.`;
-  }
-};
-
-const updateOpcodeIndex = function (opcode, index) {
-  switch (opcode) {
-    case ADDITION:
-    case MULTIPLICATION: return index + 4;
-    case INPUT:
-    case OUTPUT: return index + 2;
-    default: throw `unrecognized opcode ${opcode}.`;
   }
 };
 
 console.log(intcode);
-processIntcode(intcode, 1);
+processIntcode(intcode, 5);
