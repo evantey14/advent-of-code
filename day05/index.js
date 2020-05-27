@@ -33,7 +33,7 @@ const opcodes = [
   "EQUALS",
 ];
 
-const processIntcode = function (intcode, input) {
+const processIntcode = function (intcode, inputs) {
   let opcodeIndex = 0;
   outputs = [];
   while (intcode[opcodeIndex] !== 99) {
@@ -42,7 +42,7 @@ const processIntcode = function (intcode, input) {
     //console.log("INSTRUCTION:", opcodes[opcode]);
     const params = getParams(intcode, opcode, opcodeIndex, paramModes);
     //console.log("PARAMS:", params, "(PARAM MODES:", paramModes, ")");
-    opcodeIndex = processOpcode(intcode, input, opcodeIndex, opcode, params);
+    opcodeIndex = processOpcode(intcode, inputs, opcodeIndex, opcode, params);
     if (opcode === OUTPUT) {outputs.push(params[0])}
     //console.log(intcode.slice(0, 14), intcode[225]);
   }
@@ -96,7 +96,7 @@ const getParams = function (intcode, opcode, opcodeIndex, paramModes) {
   return params;
 };
 
-const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
+const processOpcode = function (intcode, inputs, opcodeIndex, opcode, params) {
   switch (opcode) {
     case ADDITION:
       intcode[params[2]] = params[0] + params[1];
@@ -105,7 +105,7 @@ const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
       intcode[params[2]] = params[0] * params[1];
       return opcodeIndex + 4;
     case INPUT:
-      intcode[params[0]] = input;
+      intcode[params[0]] = inputs.shift();
       return opcodeIndex + 2;
     case OUTPUT: // gets handled outside this function
       return opcodeIndex + 2;
@@ -126,4 +126,4 @@ const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
 
 module.exports = { processIntcode };
 console.log(intcode);
-console.log(processIntcode(intcode, 5));
+console.log(processIntcode(intcode, [5]));
