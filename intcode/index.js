@@ -23,6 +23,7 @@ class Intcode {
     this.pointer = 0;
     this.inputs = [];
     this.outputs = [];
+    this.isRunning = true;
   }
 
   parseInstruction(instruction) {
@@ -53,16 +54,24 @@ class Intcode {
         this.memory[params[2]] = params[0] * params[1];
         break;
       case INPUT:
-        this.memory[params[0]] = this.inputs.shift();
+        if (this.inputs.length > 0) {
+          this.memory[params[0]] = this.inputs.shift();
+        } else {
+          this.pointer -= NUMPARAMS[opcode] + 1;
+        }
         break;
       case OUTPUT:
         this.outputs.push(params[0]);
         break;
       case JUMPIFTRUE:
-        if (params[0] !== 0) { this.pointer = params[1]; }
+        if (params[0] !== 0) {
+          this.pointer = params[1];
+        }
         break;
       case JUMPIFFALSE:
-        if (params[0] === 0) { this.pointer = params[1]; }
+        if (params[0] === 0) {
+          this.pointer = params[1];
+        }
         break;
       case LESSTHAN:
         this.memory[params[2]] = params[0] < params[1] ? 1 : 0;
@@ -76,7 +85,15 @@ class Intcode {
   }
 
   run() {
-    while (this.memory[this.pointer] !== 99) {
+    while (this.isRunning) {
+      this.step();
+    }
+  }
+
+  step() {
+    if (this.memory[this.pointer] === 99) {
+      this.isRunning = false;
+    } else {
       //console.log('STATE:', this.toString());
       const [opcode, params] = this.parseInstruction(this.memory[this.pointer]);
       //console.log(OPCODENAMES[opcode], params);
@@ -86,7 +103,10 @@ class Intcode {
 
   toString() {
     const p = this.pointer;
-    return `${p} [${this.inputs}] [${this.outputs}] [${this.memory.slice(p,p + 5)}]`;
+    return `${p} [${this.inputs}] [${this.outputs}] [${this.memory.slice(
+      p,
+      p + 10
+    )}]`;
   }
 }
 

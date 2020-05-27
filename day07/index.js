@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Intcode } = require("../intcode");
+const { Amplifiers } = require("./amplifiers");
 
 const input = fs
   .readFileSync("day07/input.txt")
@@ -24,19 +24,11 @@ const generatePermutations = function (list) {
   return permutations;
 };
 
-const runAmplifiers = function (phaseSetting) {
-  const amplifiers = [...Array(5).keys()].map((s) => new Intcode(program));
-  let lastOutput = 0; // default input for first Amp
-  for (let i = 0; i < 5; i++) {
-    amplifiers[i].inputs = [phaseSetting[i], lastOutput];
-    amplifiers[i].run();
-    lastOutput = amplifiers[i].outputs[0];
-  }
-  return lastOutput;
-};
-
-const possiblePhaseSettings = generatePermutations([0, 1, 2, 3, 4]);
-
-const ampOutputs = possiblePhaseSettings.map(runAmplifiers);
+const settings = [0, 1, 2, 3, 4].map((x) => x + 5);
+const possiblePhaseSettings = generatePermutations(settings);
+const possibleAmplifiers = possiblePhaseSettings.map(
+  (s) => new Amplifiers(program, s)
+);
+const ampOutputs = possibleAmplifiers.map((a) => a.run());
 const maxValue = ampOutputs.reduce((a, b) => Math.max(a, b));
 console.log(maxValue);
