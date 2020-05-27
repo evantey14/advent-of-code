@@ -35,6 +35,7 @@ const opcodes = [
 
 const processIntcode = function (intcode, input) {
   let opcodeIndex = 0;
+  outputs = [];
   while (intcode[opcodeIndex] !== 99) {
     //console.log("INDEX:", opcodeIndex, intcode.slice(opcodeIndex, opcodeIndex + 4));
     const [paramModes, opcode] = parseInstruction(intcode[opcodeIndex]);
@@ -42,8 +43,10 @@ const processIntcode = function (intcode, input) {
     const params = getParams(intcode, opcode, opcodeIndex, paramModes);
     //console.log("PARAMS:", params, "(PARAM MODES:", paramModes, ")");
     opcodeIndex = processOpcode(intcode, input, opcodeIndex, opcode, params);
+    if (opcode === OUTPUT) {outputs.push(params[0])}
     //console.log(intcode.slice(0, 14), intcode[225]);
   }
+  return outputs;
 };
 
 const parseInstruction = function (instruction) {
@@ -104,8 +107,7 @@ const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
     case INPUT:
       intcode[params[0]] = input;
       return opcodeIndex + 2;
-    case OUTPUT:
-      console.log(params[0]);
+    case OUTPUT: // gets handled outside this function
       return opcodeIndex + 2;
     case JUMPIFTRUE:
       return params[0] !== 0 ? params[1] : opcodeIndex + 3;
@@ -122,5 +124,6 @@ const processOpcode = function (intcode, input, opcodeIndex, opcode, params) {
   }
 };
 
+module.exports = { processIntcode };
 console.log(intcode);
-processIntcode(intcode, 5);
+console.log(processIntcode(intcode, 5));
