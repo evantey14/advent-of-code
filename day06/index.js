@@ -4,7 +4,7 @@ const input = fs
   .readFileSync("day06/input.txt")
   .toString()
   .split("\n")
-  .filter((i) => i.length > 0);
+  .filter(i => i.length > 0);
 
 //console.log(input);
 
@@ -37,7 +37,7 @@ class Vertex {
 const createGraph = function (input) {
   let dag = new DAG();
   for (let i = 0; i < input.length; i++) {
-    const [p, c] = input[i].split(")").map((v) => dag.getVertex(v));
+    const [p, c] = input[i].split(")").map(v => dag.getVertex(v));
     p.addChild(c);
     c.addParent(p);
   }

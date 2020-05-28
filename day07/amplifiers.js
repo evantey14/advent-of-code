@@ -2,9 +2,7 @@ const { Intcode } = require("../intcode");
 
 class Amplifiers {
   constructor(program, settings) {
-    this.amplifiers = [...Array(5).keys()].map(
-      (s) => new Intcode([...program])
-    );
+    this.amplifiers = [...Array(5).keys()].map(s => new Intcode([...program]));
     this.settings = settings;
     for (let i = 0; i < this.amplifiers.length; i++) {
       this.amplifiers[i].inputs.push(settings[i]);
@@ -13,7 +11,7 @@ class Amplifiers {
   }
 
   run() {
-    while (this.amplifiers.some((a) => a.isRunning)) {
+    while (this.amplifiers.some(a => a.isRunning)) {
       for (let i = 0; i < this.amplifiers.length; i++) {
         const a = this.amplifiers[i];
         if (a.isRunning) {

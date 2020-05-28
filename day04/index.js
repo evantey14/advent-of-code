@@ -4,9 +4,9 @@ const input = fs
   .readFileSync("day04/input.txt")
   .toString()
   .split("\n")
-  .filter((i) => i.length > 0);
+  .filter(i => i.length > 0);
 
-const [start, stop] = input[0].split("-").map((s) => parseInt(s));
+const [start, stop] = input[0].split("-").map(s => parseInt(s));
 console.log(start, stop);
 
 const hasEqualAdjacentDigits = function (i) {

@@ -28,9 +28,7 @@ class Intcode {
 
   parseInstruction(instruction) {
     const opcode = instruction % 100;
-    const paramModes = helpers
-      .getParamModes(instruction)
-      .slice(0, NUMPARAMS[opcode]);
+    const paramModes = helpers.getParamModes(instruction).slice(0, NUMPARAMS[opcode]);
     let params = [];
     for (let i = 0; i < paramModes.length; i++) {
       const param = this.memory[this.pointer + 1 + i];
@@ -103,10 +101,7 @@ class Intcode {
 
   toString() {
     const p = this.pointer;
-    return `${p} [${this.inputs}] [${this.outputs}] [${this.memory.slice(
-      p,
-      p + 10
-    )}]`;
+    return `${p} [${this.inputs}] [${this.outputs}] [${this.memory.slice(p, p + 10)}]`;
   }
 }
 

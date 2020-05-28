@@ -4,9 +4,9 @@ const input = fs
   .readFileSync("day02/input.txt")
   .toString()
   .split("\n")
-  .filter((i) => i.length > 0);
+  .filter(i => i.length > 0);
 
-const intcode = input[0].split(",").map((i) => parseInt(i));
+const intcode = input[0].split(",").map(i => parseInt(i));
 
 const processInstruction = function (opcode, params, array) {
   const [index1, index2, index3] = params;

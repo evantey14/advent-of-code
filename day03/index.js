@@ -4,7 +4,7 @@ const input = fs
   .readFileSync("day03/input.txt")
   .toString()
   .split("\n")
-  .filter((i) => i.length > 0);
+  .filter(i => i.length > 0);
 
 const getNextPoint = function (previousPoint, instruction) {
   const direction = instruction[0];
@@ -39,8 +39,7 @@ const getLines = function (instructions) {
   return lines;
 };
 
-const getDistance = (start, end) =>
-  Math.abs(end[0] - start[0]) + Math.abs(end[1] - start[1]);
+const getDistance = (start, end) => Math.abs(end[0] - start[0]) + Math.abs(end[1] - start[1]);
 
 class Line {
   constructor(start, end) {
@@ -69,9 +68,7 @@ class Line {
     } else if (!this.isHorizontal && line.isHorizontal) {
       proposal = [this.start[0], line.start[1]];
     }
-    return this.containsPoint(proposal) && line.containsPoint(proposal)
-      ? proposal
-      : null;
+    return this.containsPoint(proposal) && line.containsPoint(proposal) ? proposal : null;
   }
 }
 
@@ -101,8 +98,7 @@ const getWireDist = function (point, wireLines) {
   return distance;
 };
 
-const getTotalWireDist = (p) =>
-  getWireDist(p, wireOneLines) + getWireDist(p, wireTwoLines);
+const getTotalWireDist = p => getWireDist(p, wireOneLines) + getWireDist(p, wireTwoLines);
 
 const wireOne = input[0].split(",");
 const wireTwo = input[1].split(",");
