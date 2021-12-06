@@ -20,14 +20,6 @@ class Point {
 const size = 1000;
 let field = new Array(size).fill(0).map(() => new Array(size).fill(0));
 
-function lineIsHorizontal(endpoints) {
-    return endpoints[0].y === endpoints[1].y;
-}
-
-function lineIsVertical(endpoints) {
-    return endpoints[0].x === endpoints[1].x;
-}
-
 for (let i = 0; i < input.length; i++) {
     const endpoints = input[i]
         .split(" -> ").map(i => 
