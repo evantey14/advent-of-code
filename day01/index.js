@@ -10,7 +10,7 @@ const depths = input.map(i => parseInt(i));
 
 let count = 0;
 for (let i = 3; i < depths.length; i++) {
-  if (depths[i] > depths[i-3]) {
+  if (depths[i] > depths[i - 3]) {
     count++;
   }
 }

@@ -10,10 +10,13 @@ class Card {
   constructor(string) {
     this.cardNumbers = string
       .split("\n")
-      .map(i => i.split(" ")
-        .filter(i => i.length > 0)
-        .map(i => parseInt(i))
-      ).flat();
+      .map(i =>
+        i
+          .split(" ")
+          .filter(i => i.length > 0)
+          .map(i => parseInt(i))
+      )
+      .flat();
     this.markers = new Array(25).fill(false);
     this.done = false;
   }
@@ -51,24 +54,22 @@ class Card {
   }
 
   isWinning() {
-    const template = [0, 1, 2, 3, 4]; 
+    const template = [0, 1, 2, 3, 4];
     return (
-    // Check rows
-    this.checkIndicesForMarkers(template)
-    || this.checkIndicesForMarkers(template.map(i => i + 5))
-    || this.checkIndicesForMarkers(template.map(i => i + 10))
-    || this.checkIndicesForMarkers(template.map(i => i + 15))
-    || this.checkIndicesForMarkers(template.map(i => i + 20))
-
-    // Check columns
-    || this.checkIndicesForMarkers(template.map(i => i * 5))
-    || this.checkIndicesForMarkers(template.map(i => i * 5 + 1))
-    || this.checkIndicesForMarkers(template.map(i => i * 5 + 2))
-    || this.checkIndicesForMarkers(template.map(i => i * 5 + 3))
-    || this.checkIndicesForMarkers(template.map(i => i * 5 + 4))
-    )
+      // Check rows
+      this.checkIndicesForMarkers(template) ||
+      this.checkIndicesForMarkers(template.map(i => i + 5)) ||
+      this.checkIndicesForMarkers(template.map(i => i + 10)) ||
+      this.checkIndicesForMarkers(template.map(i => i + 15)) ||
+      this.checkIndicesForMarkers(template.map(i => i + 20)) ||
+      // Check columns
+      this.checkIndicesForMarkers(template.map(i => i * 5)) ||
+      this.checkIndicesForMarkers(template.map(i => i * 5 + 1)) ||
+      this.checkIndicesForMarkers(template.map(i => i * 5 + 2)) ||
+      this.checkIndicesForMarkers(template.map(i => i * 5 + 3)) ||
+      this.checkIndicesForMarkers(template.map(i => i * 5 + 4))
+    );
   }
-
 }
 
 let calledNumbers = input[0].split(",").map(i => parseInt(i));

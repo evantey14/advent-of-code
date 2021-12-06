@@ -8,7 +8,7 @@ const input = fs
 
 let x_position = 0;
 let depth = 0;
-let aim = 0
+let aim = 0;
 
 for (let i = 0; i < input.length; i++) {
   [command, distance_str] = input[i].split(" ");
