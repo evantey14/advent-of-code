@@ -62,8 +62,8 @@ class Card {
 
     // Check columns
     || this.checkIndicesForMarkers(template.map(i => i * 5))
-    || this.checkIndicesForMarkers(template.map(i => i * 5 + 2))
     || this.checkIndicesForMarkers(template.map(i => i * 5 + 1))
+    || this.checkIndicesForMarkers(template.map(i => i * 5 + 2))
     || this.checkIndicesForMarkers(template.map(i => i * 5 + 3))
     || this.checkIndicesForMarkers(template.map(i => i * 5 + 4))
     )
