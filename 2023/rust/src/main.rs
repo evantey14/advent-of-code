@@ -1,4 +1,5 @@
 mod day1;
+mod day2;
 mod hello;
 
 use std::env;
@@ -15,6 +16,7 @@ fn main() {
 
     match day_number {
         1 => day1::main(),
+        2 => day2::main(),
         // Add more cases as needed
         _ => println!("Invalid day number."),
     }

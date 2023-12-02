@@ -11,7 +11,6 @@ pub fn main() {
     let x = 5;
     makes_copy(x);
 
-    println!("{s}");
     println!("{x}");
 }
 
