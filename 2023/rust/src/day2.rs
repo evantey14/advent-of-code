@@ -1,9 +1,21 @@
 use std::fs;
 
+#[derive(Debug, Default)]
 struct Round {
     red: u32,
     green: u32,
     blue: u32,
+}
+
+impl Round {
+    pub fn set_color(&mut self, color: &str, value: u32) {
+        match color {
+            "red" => self.red = value,
+            "green" => self.green = value,
+            "blue" => self.blue = value,
+            _ => println!("Invalid color {color}"),
+        }
+    }
 }
 
 pub fn main() {
@@ -27,24 +39,15 @@ pub fn main() {
         let mut rounds: Vec<Round> = Vec::new();
 
         for round_string in round_strings {
-            let mut round = Round {
-                red: 0,
-                green: 0,
-                blue: 0,
-            };
+            let mut round = Round::default();
 
             for number_color in round_string.split(",").map(|x| x.trim()) {
                 let number: u32 = number_color.split(" ").next().unwrap().parse().unwrap();
                 let color = number_color.split(" ").last().unwrap();
-                match color {
-                    "red" => round.red = number,
-                    "green" => round.green = number,
-                    "blue" => round.blue = number,
-                    _ => println!("Invalid color {color}"),
-                }
+                round.set_color(color, number);
             }
 
-            println!("Round {} {} {}", round.red, round.green, round.blue);
+            println!("{:?}", round);
 
             rounds.push(round)
         }
