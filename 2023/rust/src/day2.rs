@@ -16,6 +16,10 @@ impl Round {
             _ => println!("Invalid color {color}"),
         }
     }
+
+    pub fn is_valid(&self) -> bool {
+        self.red <= 12 && self.green <= 13 && self.blue <= 14
+    }
 }
 
 pub fn main() {
@@ -52,10 +56,7 @@ pub fn main() {
             rounds.push(round)
         }
 
-        if rounds
-            .iter()
-            .any(|round| round.red > 12 || round.green > 13 || round.blue > 14)
-        {
+        if rounds.iter().all(|round| round.is_valid()) {
             valid_games.push(i as u32 + 1);
         }
 
