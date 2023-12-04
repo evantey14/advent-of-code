@@ -13,6 +13,9 @@
 - prelude = standard library
 - `let mut guess = String::new();`
   - `::new` says `new` is an associated function w type `String`
+- `parse()` looks at the type you're supposed to have and uses the relevant `FromStr`
+  - `FromStr` is basically a constructor given a str input
+- `split_once` just gets first vs rest of stuff
 
 # TODO
 
