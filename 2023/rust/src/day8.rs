@@ -20,7 +20,7 @@ pub fn main() {
 
     let mut rounds = 0;
     while !current_nodes.iter().all(|&node| node.ends_with('Z')) {
-        for (i, step) in steps.chars().enumerate() {
+        for step in steps.chars() {
             current_nodes = current_nodes
                 .iter()
                 .map(|&node| {
@@ -32,11 +32,6 @@ pub fn main() {
                     }
                 })
                 .collect();
-            // if current_nodes.iter().any(|&node| node.ends_with('Z')) {
-            //     println!("{:?} {}", current_nodes, rounds * steps.len() + i + 1);
-            //     break;
-            // }
-            // println!("{:?} {}", current_nodes, rounds * steps.len() + i + 1);
         }
 
         rounds += 1;
