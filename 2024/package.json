@@ -11,6 +11,12 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "biome": "^0.3.3",
+    "lodash-es": "^4.17.21",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1"
   }
 }

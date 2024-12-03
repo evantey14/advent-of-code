@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "node:fs"
 import { sum } from "lodash-es"
 
 const input = fs.readFileSync("./day01/input.txt", "utf8")
@@ -7,7 +7,7 @@ console.log(input)
 const lines = input.split("\n").filter(line => line.length > 0)
 console.log(lines)
 
-const numbers = lines.map(line => line.split("  ").map(i => parseInt(i)))
+const numbers = lines.map(line => line.split("  ").map(i => Number.parseInt(i)))
 console.log(numbers)
 
 const firstColumn = numbers.map(line => line[0]).sort()
