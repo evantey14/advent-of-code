@@ -10,8 +10,8 @@
 	"author": "",
 	"license": "ISC",
 	"type": "module",
-	"dependencies": {},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@types/node": "^22.10.1",
 		"biome": "^0.3.3",
 		"lodash-es": "^4.17.21",
