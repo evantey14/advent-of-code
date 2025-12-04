@@ -1,4 +1,5 @@
-const data = await Deno.readTextFile("input.txt") satisfies string;
+const [_, file = "input"] = Deno.args;
+const data = await Deno.readTextFile(`day01/${file}.txt`) satisfies string;
 
 const lines = data.split("\n").filter((l) => l.length > 0);
 console.log(lines);

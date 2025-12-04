@@ -1,6 +1,7 @@
 import { chunk, every, sum } from "lodash-es";
 
-const data = await Deno.readTextFile("input.txt") satisfies string;
+const [_, file = "input"] = Deno.args;
+const data = await Deno.readTextFile(`day02/${file}.txt`) satisfies string;
 
 const ranges = data.split(",").map((s) =>
   s.trim().split("-").map((i) => parseInt(i))

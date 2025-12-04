@@ -1,6 +1,7 @@
 import { indexOf, max, sum } from "lodash-es";
 
-const data = await Deno.readTextFile("input.txt") satisfies string;
+const [_, file = "input"] = Deno.args;
+const data = await Deno.readTextFile(`day03/${file}.txt`) satisfies string;
 
 const banks = data.split("\n").filter((l) => l.length > 0).map((bank) =>
   bank.split("").map((i) => parseInt(i))
