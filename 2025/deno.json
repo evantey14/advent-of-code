@@ -5,5 +5,10 @@
   },
   "imports": {
     "lodash-es": "npm:lodash-es@^4.17.21"
+  },
+  "fmt": {
+    "options": {
+      "semiColons": false
+    }
   }
 }
